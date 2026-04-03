@@ -1,0 +1,56 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+body {
+  /* overflow: hidden; */
+  scrollbar-width: none; 
+}
+
+@plugin "daisyui" {
+  themes: all;
+}
+
+@keyframes route-flip-in {
+  0% {
+    opacity: 0;
+    transform: perspective(1200px) rotateX(-14deg) scale(0.98);
+    transform-origin: top center;
+  }
+
+  100% {
+    opacity: 1;
+    transform: perspective(1200px) rotateX(0deg) scale(1);
+    transform-origin: top center;
+  }
+}
+
+@keyframes switch-flip {
+  0% {
+    opacity: 0;
+    transform: rotateX(-90deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: rotateX(0deg);
+  }
+}
+
+.route-flip {
+  animation: route-flip-in 420ms ease-out;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.switch-flip {
+  animation: switch-flip 320ms ease-out;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-flip,
+  .switch-flip {
+    animation: none;
+  }
+}
