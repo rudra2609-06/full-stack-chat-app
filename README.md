@@ -12,7 +12,7 @@
 
 A **production-ready, full-stack real-time messaging application** with instant notifications, image sharing, and user presence detection. Built with modern web technologies for scalability and performance.
 
-[Live Demo](#) • [Report Bug](../../issues) • [Request Feature](../../issues)
+[Live Demo](https://full-stack-chat-app-vp1v.onrender.com/) • [Report Bug](../../issues) • [Request Feature](../../issues)
 
 </div>
 
@@ -438,19 +438,18 @@ io.on("connection", (socket) => {
 ## 📸 Screenshots
 
 ### Login Page
-[![Login Screenshot](https://via.placeholder.com/800x600?text=Login+Page)](.)
+<img width="1866" height="927" alt="Screenshot (327)" src="https://github.com/user-attachments/assets/56ee23d5-26e9-4adf-a261-30f6c739e556" />
+
 *Clean, modern login interface with form validation and error handling*
 
 ### Chat Interface
-[![Chat Screenshot](https://via.placeholder.com/800x600?text=Chat+Interface)](.)
+<img width="1864" height="952" alt="image" src="https://github.com/user-attachments/assets/054573a1-66d4-4cd9-b180-8399f2c1d567" />
+
 *Real-time messaging with message bubbles, user avatars, and online status*
 
-### User Sidebar
-[![Sidebar Screenshot](https://via.placeholder.com/800x600?text=Contact+List)](.)
-*User discovery with online/offline indicators and responsive design*
-
 ### Profile Settings
-[![Settings Screenshot](https://via.placeholder.com/800x600?text=Profile+Settings)](.)
+<img width="1873" height="933" alt="image" src="https://github.com/user-attachments/assets/e29d73ef-4daa-4cfb-abed-c709080fc91f" />
+
 *Update profile picture and user information*
 
 ---
@@ -547,7 +546,7 @@ copies of the Software...
 
 ### ⭐ If you found this helpful, please give it a star!
 
-**Built with ❤️ by [Your Name](https://github.com/yourusername)**
+**Built with ❤️ by [Rudra Thakkar](https://github.com/rudra2609-06)**
 
 [⬆ Back to Top](#-chatapp---real-time-messaging-platform)
 
