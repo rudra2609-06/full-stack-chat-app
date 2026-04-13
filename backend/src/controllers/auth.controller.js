@@ -2,7 +2,6 @@ import { generateToken } from "../lib/utils.js";
 import UserModel from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import cloudinary from "../lib/cloudinary.js";
-import { inngest } from "../lib/inngest.js";
 
 export const signup = async (req, res) => {
   console.log(req.body);
@@ -44,12 +43,7 @@ export const signup = async (req, res) => {
       const user = newUser.toObject();
       delete user.password;
       generateToken(user._id, res);
-      
-      // inngest.send({
-      //   name: "chatApp/user.created",
-      //   data: user,
-      // });
-      
+
       console.log("reached 1");
       return res
         .status(201)
