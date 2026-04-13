@@ -2,6 +2,7 @@ import MessageModel from "../models/message.model.js";
 import UserModel from "../models/user.model.js";
 import cloudinary from "../lib/cloudinary.js";
 import { getReceiverSocketId, io } from "../lib/socket.js";
+import { Mongoose, Types } from "mongoose";
 
 export const getUserForSideBar = async (req, res) => {
   try {
@@ -18,8 +19,12 @@ export const getUserForSideBar = async (req, res) => {
 
 export const getMessages = async (req, res) => {
   try {
-    const { id: userToChat } = req.params; //renamed the incoming param
+    const { id } = req.params;
+    if (!id || !Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Required valid User Id" });
+    }
     const myId = req.user._id;
+    const userToChat = Types.ObjectId.createFromHexString(id);
     if (!userToChat) {
       return res.status(400).json({ message: "Required User Id" });
     }
@@ -64,10 +69,10 @@ export const sendMessages = async (req, res) => {
       image: imgUrl,
     });
     const receiverSocketId = getReceiverSocketId(receiverId);
-    if(receiverSocketId){
-      io.to(receiverSocketId).emit("newMessage",newMessage);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
     }
-    
+
     return res
       .status(201)
       .json({ message: "Message Created Successfully", data: newMessage });
