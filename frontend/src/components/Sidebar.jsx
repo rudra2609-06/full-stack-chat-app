@@ -10,7 +10,7 @@ const Sidebar = () => {
 
   const { onlineUsers } = useAuthStore();
   const [showOnlineOnly, setShowOnlineOnly] = useState(false);
-  const [showProfileDetails, setShowProfileDetails] = useState(false);
+  const [previewUser, setPreviewUser] = useState(null);
 
   useEffect(() => {
     getAllUsers();
@@ -51,13 +51,13 @@ const Sidebar = () => {
         {filteredUsers.map((user) => (
           <button
             key={user._id}
-            disabled={selectedUser?._id !== user?._id ? false : true}
+            disabled={selectedUser?._id === user._id}
             onClick={() => {
               setSelectedUser(user);
             }}
             className={`
               w-full p-3 flex items-center cursor-pointer gap-3
-              hover:bg-base-300 transition-colors 
+              hover:bg-base-300 transition-colors
               ${selectedUser?._id === user._id ? "bg-base-300 ring-1 ring-base-300" : ""}
             `}
           >
@@ -65,7 +65,8 @@ const Sidebar = () => {
               className="relative mx-auto lg:mx-0"
               tabIndex={0}
               onClick={(e) => {
-                (setShowProfileDetails(true), e.stopPropagation());
+                e.stopPropagation();
+                setPreviewUser(user);
               }}
             >
               <img
@@ -75,35 +76,11 @@ const Sidebar = () => {
               />
               {onlineUsers.includes(user._id) && (
                 <span
-                  className="absolute bottom-0 right-0 size-3 bg-green-500 
+                  className="absolute bottom-0 right-0 size-3 bg-green-500
                   rounded-full ring-2 ring-zinc-900"
                 />
               )}
             </div>
-
-            {showProfileDetails && (
-              <div
-                className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm"
-                onClick={() => setShowProfileDetails(false)}
-              >
-                <div className="relative" onClick={(e) => e.stopPropagation()}>
-                  {/* Close button — top-right of the image */}
-                  <button
-                    onClick={() => setShowProfileDetails(false)}
-                    className="absolute -top-3 -right-3 z-10 w-7 h-7 rounded-full bg-white/20 border border-white/40 flex items-center justify-center text-white hover:bg-white/30 cursor-pointer"
-                  >
-                    <X size={14} />
-                  </button>
-
-                  {/* Full-size image */}
-                  <img
-                    src={user.profilePic || "/avatar.png"}
-                    alt="userProfileImg"
-                    className="w-48 h-48 rounded-full object-cover border-2 border-white"
-                  />
-                </div>
-              </div>
-            )}
 
             {/* TODO: Create it for smaller screen's also */}
             {/* User info - only visible on larger screens */}
@@ -120,6 +97,29 @@ const Sidebar = () => {
           <div className="text-center text-zinc-500 py-4">No online users</div>
         )}
       </div>
+
+      {previewUser && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm"
+          onClick={() => setPreviewUser(null)}
+        >
+          <div className="relative" onClick={(e) => e.stopPropagation()}>
+            <button
+              onClick={() => setPreviewUser(null)}
+              className="absolute -top-3 -right-3 z-10 w-7 h-7 rounded-full bg-white/20 border border-white/40 flex items-center justify-center text-white hover:bg-white/30 cursor-pointer"
+              aria-label={`Close ${previewUser.name}'s profile image`}
+            >
+              <X size={14} />
+            </button>
+
+            <img
+              src={previewUser.profilePic || "/avatar.png"}
+              alt={`${previewUser.name} profile`}
+              className="w-48 h-48 rounded-full object-cover border-2 border-white"
+            />
+          </div>
+        </div>
+      )}
     </aside>
   );
 };
