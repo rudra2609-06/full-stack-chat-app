@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { useAuthStore } from "../store/useAuthStore";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { HomeIcon, LogOut, MessageSquare, Settings, User } from "lucide-react";
 // import { useChatStore } from "../store/useChatStore";
 
@@ -8,9 +8,9 @@ import { HomeIcon, LogOut, MessageSquare, Settings, User } from "lucide-react";
 // if the user is authenticated user will see logo and settings,profile and logout btn
 const Navbar = () => {
   const { authUser, logout } = useAuthStore();
-  const [isClicked, setIsClicked] = useState(false);
   // const { clearSelectedUser } = useChatStore();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   return (
     <header className="bg-base-100 border-b border-base-300 fixed w-full top-0 z-40 backdrop-blur-lg ">
@@ -32,39 +32,45 @@ const Navbar = () => {
           {/* right side */}
 
           <div className="flex items-center gap-2">
-            <button onClick={() => setIsClicked((prev) => !prev)} type="button">
-              <Link
-                to={!isClicked ? "/settings" : "/"}
-                className={`
-              btn btn-sm gap-2 transition-colors perspective-midrange
-              
-              `}
-              >
-                <span className="switch-flip inline-flex">
-                  {!isClicked ? (
-                    <Settings className="size-4" />
-                  ) : (
-                    <HomeIcon className="size-4" />
-                  )}
-                </span>
-                <span className="switch-flip hidden sm:inline">
-                  {!isClicked ? "Settings" : "Home"}
-                </span>
-              </Link>
-            </button>
+            {/* Settings / Home button */}
+            <Link
+              to={pathname === "/settings" ? "/" : "/settings"}
+              className="btn btn-sm gap-2 transition-colors"
+            >
+              <span className="inline-flex">
+                {pathname === "/settings" ? (
+                  <HomeIcon className="size-4" />
+                ) : (
+                  <Settings className="size-4" />
+                )}
+              </span>
+              <span className="hidden sm:inline">
+                {pathname === "/settings" ? "Home" : "Settings"}
+              </span>
+            </Link>
 
+            {/* Profile / Home button */}
             {authUser && (
               <>
-                <Link to={"/profile"} className={`btn btn-sm gap-2`}>
-                  <User className="size-5" />
-                  <span className="hidden sm:inline">Profile</span>
+                <Link
+                  to={pathname === "/profile" ? "/" : "/profile"}
+                  className="btn btn-sm gap-2"
+                >
+                  <span className="inline-flex">
+                    {pathname === "/profile" ? (
+                      <HomeIcon className="size-4" />
+                    ) : (
+                      <User className="size-5" />
+                    )}
+                  </span>
+                  <span className="hidden sm:inline">
+                    {pathname === "/profile" ? "Home" : "Profile"}
+                  </span>
                 </Link>
 
                 <button
                   className="flex gap-2 items-center cursor-pointer"
-                  onClick={() => {
-                    (logout(navigate));
-                  }}
+                  onClick={() => logout(navigate)}
                 >
                   <LogOut className="size-5" />
                   <span className="hidden sm:inline">Logout</span>

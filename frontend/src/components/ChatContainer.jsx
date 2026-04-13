@@ -66,13 +66,13 @@ const ChatContainer = () => {
             return (
               <div
                 key={message._id}
-                className={`chat ${message.senderId === authUser._id ? "chat-end" : "chat-start"}`}
+                className={`chat ${message?.senderId === authUser?._id ? "chat-end" : "chat-start"}`}
               >
                 <div className="chat-image avatar">
                   <div className="size-10 rounded-full border">
                     <img
                       src={
-                        message.senderId === authUser._id
+                        message.senderId === authUser?._id
                           ? authUser.profilePic || "/avatar.png"
                           : selectedUser.profilePic || "/avatar.png"
                       }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
 import SidebarSkeleton from "./SidebarSkeleton";
-import { Users } from "lucide-react";
+import { Users, X } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 
 const Sidebar = () => {
@@ -10,6 +10,7 @@ const Sidebar = () => {
 
   const { onlineUsers } = useAuthStore();
   const [showOnlineOnly, setShowOnlineOnly] = useState(false);
+  const [showProfileDetails, setShowProfileDetails] = useState(false);
 
   useEffect(() => {
     getAllUsers();
@@ -50,14 +51,23 @@ const Sidebar = () => {
         {filteredUsers.map((user) => (
           <button
             key={user._id}
-            onClick={() => setSelectedUser(user)}
+            disabled={selectedUser?._id !== user?._id ? false : true}
+            onClick={() => {
+              setSelectedUser(user);
+            }}
             className={`
               w-full p-3 flex items-center cursor-pointer gap-3
-              hover:bg-base-300 transition-colors
+              hover:bg-base-300 transition-colors 
               ${selectedUser?._id === user._id ? "bg-base-300 ring-1 ring-base-300" : ""}
             `}
           >
-            <div className="relative mx-auto lg:mx-0">
+            <div
+              className="relative mx-auto lg:mx-0"
+              tabIndex={0}
+              onClick={(e) => {
+                (setShowProfileDetails(true), e.stopPropagation());
+              }}
+            >
               <img
                 src={user.profilePic || "/avatar.png"}
                 alt={user.name}
@@ -70,6 +80,30 @@ const Sidebar = () => {
                 />
               )}
             </div>
+
+            {showProfileDetails && (
+              <div
+                className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm"
+                onClick={() => setShowProfileDetails(false)}
+              >
+                <div className="relative" onClick={(e) => e.stopPropagation()}>
+                  {/* Close button — top-right of the image */}
+                  <button
+                    onClick={() => setShowProfileDetails(false)}
+                    className="absolute -top-3 -right-3 z-10 w-7 h-7 rounded-full bg-white/20 border border-white/40 flex items-center justify-center text-white hover:bg-white/30 cursor-pointer"
+                  >
+                    <X size={14} />
+                  </button>
+
+                  {/* Full-size image */}
+                  <img
+                    src={user.profilePic || "/avatar.png"}
+                    alt="userProfileImg"
+                    className="w-48 h-48 rounded-full object-cover border-2 border-white"
+                  />
+                </div>
+              </div>
+            )}
 
             {/* TODO: Create it for smaller screen's also */}
             {/* User info - only visible on larger screens */}
